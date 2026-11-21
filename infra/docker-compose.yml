@@ -1,0 +1,55 @@
+services:
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: nagpurbus-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nagpurbus}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nagpurbus_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-nagpurbus}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nagpurbus} -d ${POSTGRES_DB:-nagpurbus}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: nagpurbus-redis
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--maxmemory", "256mb", "--maxmemory-policy", "volatile-lru"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    image: python:3.12-slim
+    container_name: nagpurbus-api
+    working_dir: /app
+    volumes:
+      - ..:/app
+    env_file:
+      - ../.env.example
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-nagpurbus}:${POSTGRES_PASSWORD:-nagpurbus_dev}@db:5432/${POSTGRES_DB:-nagpurbus}
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ["sh", "-c", "pip install --no-cache-dir -e . && uvicorn backend.app.main:app --host 0.0.0.0 --port 8000"]
+
+volumes:
+  pgdata:
