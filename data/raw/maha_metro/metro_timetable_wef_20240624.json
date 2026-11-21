@@ -1,0 +1,165 @@
+{
+  "source": {
+    "agency": "Maharashtra Metro Rail Corporation Limited (Maha Metro - Nagpur)",
+    "effective_date": "2024-06-24",
+    "schedule_codes": [
+      "TT_L1_PT8_NPT6_PH10_NPH15",
+      "TT_L2_PT8_NPT6_PH10_NPH15"
+    ],
+    "urls": [
+      "https://www.metrorailnagpur.com/assets/timetable-line1-C1mScLU4.jpg",
+      "https://www.metrorailnagpur.com/assets/timetable-line2-BrxX_anJ.jpg"
+    ],
+    "note": "Exact inter-station running offsets (seconds) and peak/off-peak headway bands transcribed verbatim from official Maha Metro Nagpur WEF 2024-06-24 timetable charts."
+  },
+  "lines": {
+    "metro_orange": {
+      "route_short_name": "Orange",
+      "route_long_name": "Nagpur Metro Orange Line (Khapri - Automotive Square)",
+      "route_color": "FF6B00",
+      "route_text_color": "FFFFFF",
+      "directions": {
+        "0": {
+          "osm_relation_id": 9565725,
+          "headsign": "Automotive Square",
+          "stations": [
+            {"name": "Khapri", "offset_s": 0},
+            {"name": "New Airport", "offset_s": 190},
+            {"name": "Airport South", "offset_s": 326},
+            {"name": "Airport", "offset_s": 437},
+            {"name": "Ujjwal Nagar", "offset_s": 559},
+            {"name": "Jaiprakash Nagar", "offset_s": 657},
+            {"name": "Chhatrapati Square", "offset_s": 750},
+            {"name": "Ajni Square", "offset_s": 863},
+            {"name": "Rahate Colony", "offset_s": 978},
+            {"name": "Congress Nagar", "offset_s": 1131},
+            {"name": "Sitabuldi", "offset_s": 1335},
+            {"name": "Zero Mile", "offset_s": 1441},
+            {"name": "Kasturchand Park", "offset_s": 1548},
+            {"name": "Gaddi Godam Square", "offset_s": 1657},
+            {"name": "Kadvi Square", "offset_s": 1811},
+            {"name": "Indora Square", "offset_s": 1927},
+            {"name": "Nari Road", "offset_s": 2077},
+            {"name": "Automotive Square", "offset_s": 2252}
+          ],
+          "frequency_bands": [
+            {"start": "06:00:00", "end": "07:00:00", "headway_s": 1200},
+            {"start": "07:00:00", "end": "07:45:00", "headway_s": 900},
+            {"start": "07:45:00", "end": "11:00:00", "headway_s": 600},
+            {"start": "11:00:00", "end": "17:00:00", "headway_s": 900},
+            {"start": "17:00:00", "end": "20:00:00", "headway_s": 600},
+            {"start": "20:00:00", "end": "22:01:00", "headway_s": 900}
+          ]
+        },
+        "1": {
+          "osm_relation_id": 9571556,
+          "headsign": "Khapri",
+          "stations": [
+            {"name": "Automotive Square", "offset_s": 0},
+            {"name": "Nari Road", "offset_s": 175},
+            {"name": "Indora Square", "offset_s": 325},
+            {"name": "Kadvi Square", "offset_s": 441},
+            {"name": "Gaddi Godam Square", "offset_s": 595},
+            {"name": "Kasturchand Park", "offset_s": 704},
+            {"name": "Zero Mile", "offset_s": 811},
+            {"name": "Sitabuldi", "offset_s": 917},
+            {"name": "Congress Nagar", "offset_s": 1121},
+            {"name": "Rahate Colony", "offset_s": 1274},
+            {"name": "Ajni Square", "offset_s": 1389},
+            {"name": "Chhatrapati Square", "offset_s": 1502},
+            {"name": "Jaiprakash Nagar", "offset_s": 1595},
+            {"name": "Ujjwal Nagar", "offset_s": 1693},
+            {"name": "Airport", "offset_s": 1815},
+            {"name": "Airport South", "offset_s": 1926},
+            {"name": "New Airport", "offset_s": 2062},
+            {"name": "Khapri", "offset_s": 2252}
+          ],
+          "frequency_bands": [
+            {"start": "06:00:00", "end": "07:00:00", "headway_s": 1200},
+            {"start": "07:00:00", "end": "08:00:00", "headway_s": 900},
+            {"start": "08:00:00", "end": "11:00:00", "headway_s": 600},
+            {"start": "11:00:00", "end": "17:00:00", "headway_s": 900},
+            {"start": "17:00:00", "end": "20:00:00", "headway_s": 600},
+            {"start": "20:00:00", "end": "22:01:00", "headway_s": 900}
+          ]
+        }
+      }
+    },
+    "metro_aqua": {
+      "route_short_name": "Aqua",
+      "route_long_name": "Nagpur Metro Aqua Line (Lokmanya Nagar - Prajapati Nagar)",
+      "route_color": "00A8B5",
+      "route_text_color": "FFFFFF",
+      "directions": {
+        "0": {
+          "osm_relation_id": 10659362,
+          "headsign": "Prajapati Nagar",
+          "stations": [
+            {"name": "Lokmanya Nagar", "offset_s": 0},
+            {"name": "Bansi Nagar", "offset_s": 131},
+            {"name": "Vasudev Nagar", "offset_s": 252},
+            {"name": "Rachna Ring Road", "offset_s": 373},
+            {"name": "Subhash Nagar", "offset_s": 499},
+            {"name": "Ambazari Lake", "offset_s": 613},
+            {"name": "LAD College", "offset_s": 757},
+            {"name": "Shankar Nagar Square", "offset_s": 859},
+            {"name": "Institute of Engineers", "offset_s": 966},
+            {"name": "Jhansi Rani Square", "offset_s": 1069},
+            {"name": "Sitabuldi", "offset_s": 1177},
+            {"name": "Cotton Market", "offset_s": 1307},
+            {"name": "Nagpur Railway Station", "offset_s": 1402},
+            {"name": "Dosar Vaisya Square", "offset_s": 1506},
+            {"name": "Agrasen Square", "offset_s": 1609},
+            {"name": "Chitaroli Square", "offset_s": 1714},
+            {"name": "Telephone Exchange", "offset_s": 1816},
+            {"name": "Ambedkar Square", "offset_s": 1936},
+            {"name": "Vaishnodevi Square", "offset_s": 2022},
+            {"name": "Prajapati Nagar", "offset_s": 2210}
+          ],
+          "frequency_bands": [
+            {"start": "06:00:00", "end": "07:00:00", "headway_s": 1200},
+            {"start": "07:00:00", "end": "07:40:00", "headway_s": 900},
+            {"start": "07:40:00", "end": "11:00:00", "headway_s": 600},
+            {"start": "11:00:00", "end": "17:00:00", "headway_s": 900},
+            {"start": "17:00:00", "end": "20:00:00", "headway_s": 600},
+            {"start": "20:00:00", "end": "22:01:00", "headway_s": 900}
+          ]
+        },
+        "1": {
+          "osm_relation_id": 10659361,
+          "headsign": "Lokmanya Nagar",
+          "stations": [
+            {"name": "Prajapati Nagar", "offset_s": 0},
+            {"name": "Vaishnodevi Square", "offset_s": 188},
+            {"name": "Ambedkar Square", "offset_s": 274},
+            {"name": "Telephone Exchange", "offset_s": 394},
+            {"name": "Chitaroli Square", "offset_s": 496},
+            {"name": "Agrasen Square", "offset_s": 601},
+            {"name": "Dosar Vaisya Square", "offset_s": 704},
+            {"name": "Nagpur Railway Station", "offset_s": 808},
+            {"name": "Cotton Market", "offset_s": 903},
+            {"name": "Sitabuldi", "offset_s": 1053},
+            {"name": "Jhansi Rani Square", "offset_s": 1141},
+            {"name": "Institute of Engineers", "offset_s": 1244},
+            {"name": "Shankar Nagar Square", "offset_s": 1351},
+            {"name": "LAD College", "offset_s": 1453},
+            {"name": "Ambazari Lake", "offset_s": 1597},
+            {"name": "Subhash Nagar", "offset_s": 1711},
+            {"name": "Rachna Ring Road", "offset_s": 1837},
+            {"name": "Vasudev Nagar", "offset_s": 1958},
+            {"name": "Bansi Nagar", "offset_s": 2079},
+            {"name": "Lokmanya Nagar", "offset_s": 2210}
+          ],
+          "frequency_bands": [
+            {"start": "06:00:00", "end": "07:00:00", "headway_s": 1200},
+            {"start": "07:00:00", "end": "08:00:00", "headway_s": 900},
+            {"start": "08:00:00", "end": "11:00:00", "headway_s": 600},
+            {"start": "11:00:00", "end": "17:00:00", "headway_s": 900},
+            {"start": "17:00:00", "end": "20:00:00", "headway_s": 600},
+            {"start": "20:00:00", "end": "22:01:00", "headway_s": 900}
+          ]
+        }
+      }
+    }
+  }
+}
