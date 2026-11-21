@@ -123,9 +123,9 @@ def test_gtfs_static_adapter_roundtrip_and_strict_validation(tmp_path: Path) -> 
     loaded = local_adapter.fetch_and_normalize()
 
     assert len(loaded.agencies) == 2
-    assert len(loaded.routes) == 14
-    assert len(loaded.trips) == 559
-    assert len(loaded.stop_times) == 6736
+    assert len(loaded.routes) == 30
+    assert len(loaded.trips) == 2425
+    assert len(loaded.stop_times) == 17447
     assert validate_bundle_internal(loaded) == []
 
     # Malformed zip missing required stops.txt must fail loudly (no silent error handling)
@@ -167,15 +167,18 @@ def test_official_mobilitydata_gtfs_validator_zero_errors() -> None:
 
 def test_static_api_truth_in_data_and_multilingual_search() -> None:
     """Verify FastAPI static endpoints, Truth-in-Data source labels, multilingual search, and map preview."""
-    app = create_app(DATA_DIR / "processed" / "nagpurbus_static.sqlite3")
+    app = create_app(
+        DATA_DIR / "processed" / "nagpurbus_static.sqlite3",
+        enable_simulator=False,
+    )
     client = TestClient(app)
 
     assert client.get("/health").json()["status"] == "ok"
 
     meta = client.get("/api/v1/meta").json()
     assert meta["is_simulated"] is False
-    assert meta["counts"]["routes"] == 14
-    assert meta["counts"]["trips"] == 559
+    assert meta["counts"]["routes"] == 30
+    assert meta["counts"]["trips"] == 2425
     assert "ODbL" in meta["osm_attribution"]
 
     # Multilingual searches (English, Hindi, Marathi, Nagpur aliases)
@@ -185,6 +188,9 @@ def test_static_api_truth_in_data_and_multilingual_search() -> None:
         ("खापरी", "Khapri"),
         ("AIIMS", "AIIMS"),
         ("कामठी", "Kamptee"),
+        ("मेडिकल", "Medical"),
+        ("बुटीबोरी", "Butibori"),
+        ("वाठोडा", "Wathoda"),
     ]:
         res = client.get("/api/v1/stops", params={"q": q})
         assert res.status_code == 200

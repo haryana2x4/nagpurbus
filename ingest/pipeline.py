@@ -21,6 +21,7 @@ import structlog
 from ingest.adapters.base import TransitIngestError
 from ingest.adapters.gtfs_static import GTFSStaticAdapter
 from ingest.adapters.maha_metro import MahaMetroFeederAdapter
+from ingest.adapters.nmc_trunk import NMCTrunkCorridorsAdapter
 from ingest.adapters.osm import OSMTransitAdapter
 from ingest.aliases import build_stop_search_blob, enrich_stop_multilingual
 from ingest.gtfs_export import export_gtfs_zip
@@ -284,10 +285,14 @@ def run_static_pipeline(
         )
         maha_bundle = maha_adapter.fetch_and_normalize()
 
-        # Combine OSM standalone bus stops + Maha Metro/Feeder routes/trips/shapes
+        trunk_adapter = NMCTrunkCorridorsAdapter(road_snapper=snapper)
+        trunk_bundle = trunk_adapter.fetch_and_normalize()
+
+        # Combine OSM standalone bus stops + Maha Metro/Feeders + NMC City Bus Trunk Corridors
         bundle = GTFSFeedBundle()
         bundle.merge(osm_bundle)
         bundle.merge(maha_bundle)
+        bundle.merge(trunk_bundle)
 
     # Enrich all stops with Hindi/Marathi names & Nagpur landmark aliases
     bundle.stops = {sid: enrich_stop_multilingual(s) for sid, s in bundle.stops.items()}

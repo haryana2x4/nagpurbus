@@ -623,10 +623,16 @@ class MahaMetroFeederAdapter(BaseTransitAdapter):
             for s_idx, series in enumerate(pr.series):
                 label_low = series.origin_label.lower()
                 matched_spec = None
+                # Prefer prefix match first so "Kamptee Bus Stand to Prajapati..." doesn't match "prajapati"
                 for key_sub, direction_id, stop_ids, headsign in cfg["series_map"]:
-                    if key_sub in label_low:
+                    if label_low.startswith(key_sub):
                         matched_spec = (direction_id, stop_ids, headsign)
                         break
+                if matched_spec is None:
+                    for key_sub, direction_id, stop_ids, headsign in cfg["series_map"]:
+                        if key_sub in label_low:
+                            matched_spec = (direction_id, stop_ids, headsign)
+                            break
                 if matched_spec is None:
                     # Fallback by series index (0=outbound, >=1=return)
                     key_sub, direction_id, stop_ids, headsign = cfg["series_map"][min(s_idx, len(cfg["series_map"]) - 1)]

@@ -17,6 +17,10 @@ build/
 # Raw cached large downloads / artifacts
 data/raw/*.osm.pbf
 data/raw/*.jar
+data/raw/osm/
+data/raw/maha_metro/*.pdf
+data/raw/maha_metro/*.jpg
+data/raw/maha_metro/*.webp
 data/gtfs/*.zip
 data/validation_report/
 *.db
