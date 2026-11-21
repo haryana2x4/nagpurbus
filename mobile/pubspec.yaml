@@ -1,0 +1,29 @@
+name: nagpurbus
+description: NagpurBus — Chalo-class open-data live bus & Metro app for Nagpur (Android first, Flutter).
+publish_to: "none"
+version: 0.2.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  maplibre_gl: ^0.20.0
+  web_socket_channel: ^3.0.1
+  http: ^1.2.2
+  drift: ^2.20.2
+  sqlite3_flutter_libs: ^0.5.24
+  path_provider: ^2.1.4
+  google_fonts: ^6.2.1
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
