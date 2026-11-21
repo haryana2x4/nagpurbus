@@ -384,30 +384,34 @@ out skel qt;
                         name_mr = (ntags.get("name:mr") or "").strip()
 
                         # Relation member stop_position nodes are often untagged in skel mode;
-                        # snap to the nearest tagged OSM railway=station node within 600 m (handles Sitabuldi Interchange offset).
+                        # first handle Sitabuldi Interchange & Cotton Market whose OSM railway=station
+                        # label nodes are offset from the viaduct stop_positions, then match within 250 m.
                         if not nname:
-                            best_dist = 600.0
-                            best_stn: dict[str, Any] | None = None
-                            for _, stn_node in raw_metro_station_nodes:
-                                d = _utm_distance_m(nlat, nlon, float(stn_node["lat"]), float(stn_node["lon"]))
-                                if d < best_dist:
-                                    best_dist = d
-                                    best_stn = stn_node
-                            if best_stn is not None:
-                                stags = best_stn.get("tags") or {}
-                                nname = (stags.get("name:en") or stags.get("name") or "").strip()
-                                name_hi = (stags.get("name:hi") or "").strip()
-                                name_mr = (stags.get("name:mr") or "").strip()
-
-                        if not nname or (
-                            _utm_distance_m(nlat, nlon, 21.145990, 79.089773) < 120.0
-                        ):
-                            if _utm_distance_m(nlat, nlon, 21.145990, 79.089773) < 250.0:
+                            if _utm_distance_m(nlat, nlon, 21.14165, 79.08260) < 150.0:
+                                nname = "Sitabuldi"
+                                name_hi = "सीताबर्डी"
+                                name_mr = "सीताबर्डी"
+                            elif _utm_distance_m(nlat, nlon, 21.145990, 79.089773) < 150.0:
                                 nname = "Cotton Market"
                                 name_hi = "कॉटन मार्केट"
                                 name_mr = "कॉटन मार्केट"
-                            elif not nname:
-                                nname = f"Nagpur Metro Stop {ref_id}"
+                            else:
+                                best_dist = 250.0
+                                best_stn: dict[str, Any] | None = None
+                                for _, stn_node in raw_metro_station_nodes:
+                                    d = _utm_distance_m(
+                                        nlat, nlon, float(stn_node["lat"]), float(stn_node["lon"])
+                                    )
+                                    if d < best_dist:
+                                        best_dist = d
+                                        best_stn = stn_node
+                                if best_stn is not None:
+                                    stags = best_stn.get("tags") or {}
+                                    nname = (stags.get("name:en") or stags.get("name") or "").strip()
+                                    name_hi = (stags.get("name:hi") or "").strip()
+                                    name_mr = (stags.get("name:mr") or "").strip()
+                                else:
+                                    nname = f"Nagpur Metro Stop {ref_id}"
 
                         cleaned = osm_metro_name_cleanup.get(nname.lower()) or osm_metro_name_cleanup.get(nname)
                         if cleaned:
