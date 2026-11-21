@@ -124,8 +124,8 @@ def test_gtfs_static_adapter_roundtrip_and_strict_validation(tmp_path: Path) -> 
 
     assert len(loaded.agencies) == 2
     assert len(loaded.routes) == 30
-    assert len(loaded.trips) == 2425
-    assert len(loaded.stop_times) == 17447
+    assert len(loaded.trips) == 2457
+    assert len(loaded.stop_times) == 18826
     assert validate_bundle_internal(loaded) == []
 
     # Malformed zip missing required stops.txt must fail loudly (no silent error handling)
@@ -178,7 +178,7 @@ def test_static_api_truth_in_data_and_multilingual_search() -> None:
     meta = client.get("/api/v1/meta").json()
     assert meta["is_simulated"] is False
     assert meta["counts"]["routes"] == 30
-    assert meta["counts"]["trips"] == 2425
+    assert meta["counts"]["trips"] == 2457
     assert "ODbL" in meta["osm_attribution"]
 
     # Multilingual searches (English, Hindi, Marathi, Nagpur aliases)

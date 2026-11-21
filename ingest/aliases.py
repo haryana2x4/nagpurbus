@@ -299,6 +299,108 @@ NAGPUR_STOP_TRANSLATIONS: tuple[NagpurStopTranslation, ...] = (
         "बुटीबोरी",
         ("Butibori MIDC", "Butibori"),
     ),
+    NagpurStopTranslation(
+        "madhav nagri",
+        "माधव नगरी",
+        "माधव नगरी",
+        ("Madav Nagri", "Madhav Nagari", "Avinash Madhav Nagari", "Bhilgaon", "भिलगाव", "Kamptee Road"),
+    ),
+    NagpurStopTranslation(
+        "bharat town",
+        "भारत टाउन",
+        "भारत टाऊन",
+        ("Bharat Town", "Yerkheda", "येरखेडा", "Ranala", "Kamptee Road"),
+    ),
+    NagpurStopTranslation(
+        "khasala",
+        "खसाला",
+        "खसाला",
+        ("Khasala", "Kamptee Road"),
+    ),
+    NagpurStopTranslation(
+        "medical",
+        "मेडिकल चौक",
+        "मेडिकल चौक",
+        ("GMC Nagpur", "Medical Square", "VR Mall", "VR Nagpur", "Rambagh"),
+    ),
+    NagpurStopTranslation(
+        "sakkardara",
+        "सक्करदरा",
+        "सक्करदरा",
+        ("Sakkardara Square", "Sakkardara Lake"),
+    ),
+    NagpurStopTranslation(
+        "dighori",
+        "दिघोरी नाका",
+        "दिघोरी नाका",
+        ("Dighori", "Kharbi", "खरबी"),
+    ),
+    NagpurStopTranslation(
+        "mahal",
+        "महाल",
+        "महाल",
+        ("Mahal", "Gandhisagar", "Chitnis Park"),
+    ),
+    NagpurStopTranslation(
+        "nandanvan",
+        "नंदनवन",
+        "नंदनवन",
+        ("Nandanvan", "Nandanwan", "KDK College"),
+    ),
+    NagpurStopTranslation(
+        "dharampeth",
+        "धरमपेठ",
+        "धरमपेठ",
+        ("Dharampeth", "Law College Square", "West High Court"),
+    ),
+    NagpurStopTranslation(
+        "trimurti",
+        "त्रिमूर्ति नगर",
+        "त्रिमूर्ती नगर",
+        ("Trimurti Nagar", "Ring Road"),
+    ),
+    NagpurStopTranslation(
+        "besa",
+        "बेसा",
+        "बेसा",
+        ("Besa", "Besa Square", "Pipla", "पिपळा"),
+    ),
+    NagpurStopTranslation(
+        "civil lines",
+        "सिविल लाइन्स",
+        "सिव्हिल लाईन्स",
+        ("Civil Lines", "GPO Square", "High Court Nagpur", "Seminary Hills"),
+    ),
+    NagpurStopTranslation(
+        "koradi",
+        "कोराडी",
+        "कोराडी",
+        ("Koradi Mandir", "Koradi Temple", "KTPS"),
+    ),
+    NagpurStopTranslation(
+        "mankapur",
+        "मानकापुर",
+        "मानकापूर",
+        ("Mankapur", "Mankapur Stadium"),
+    ),
+    NagpurStopTranslation(
+        "jaripatka",
+        "जरीपटका",
+        "जरीपटका",
+        ("Jaripatka", "Nara"),
+    ),
+    NagpurStopTranslation(
+        "jaitala",
+        "जैताला",
+        "जैताळा",
+        ("Jaitala", "Hingna T-Point"),
+    ),
+    NagpurStopTranslation(
+        "deekshabhoomi",
+        "दीक्षाभूमि",
+        "दीक्षाभूमी",
+        ("Dikshabhoomi", "Deekshabhoomi", "Laxmi Nagar", "Bajaj Nagar"),
+    ),
 )
 
 

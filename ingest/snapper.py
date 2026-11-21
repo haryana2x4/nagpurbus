@@ -155,29 +155,102 @@ class OSMRoadSnapper:
             )
         return self._kdtree_ids[int(idx)], float(dist_m)
 
+    def nearest_road_candidates(
+        self,
+        lat: float,
+        lon: float,
+        k: int = 8,
+        max_radius_m: float = 400.0,
+    ) -> list[tuple[int, float]]:
+        """Return up to k nearest OSM road nodes (captures both sides of divided oneway highways)."""
+        if self._kdtree is None or not self._kdtree_ids:
+            raise RuntimeError("Road snapper graph is empty; cannot snap coordinates.")
+        x, y = WGS84_TO_UTM44N.transform(lon, lat)
+        k_eff = min(k, len(self._kdtree_ids))
+        dists, idxs = self._kdtree.query([x, y], k=k_eff)
+        if k_eff == 1:
+            dists, idxs = [float(dists)], [int(idxs)]
+        cands = [
+            (self._kdtree_ids[int(i)], float(d))
+            for d, i in zip(dists, idxs)
+            if float(d) <= max_radius_m
+        ]
+        if not cands:
+            # Fallback to single closest node within wider radius
+            nid, d = self.nearest_road_node(lat, lon)
+            return [(nid, d)]
+        return cands
+
     def snap_stop_sequence(
         self,
         shape_id: str,
         ordered_stops: list[tuple[str, float, float]],
         data_source: str = "osm_nagpur",
     ) -> tuple[ShapeRecord, list[SnappedStopProjection]]:
-        """Snap an ordered list of (stop_id, lat, lon) onto the OSM road network via Dijkstra."""
+        """Snap an ordered stop sequence onto OSM roads, selecting the correct side of divided highways."""
         if len(ordered_stops) < 2:
             raise ValueError(f"Need at least 2 stops to snap shape {shape_id}, got {len(ordered_stops)}")
 
-        snapped_nodes: list[tuple[str, int, float]] = []
-        for stop_id, lat, lon in ordered_stops:
-            nid, err_m = self.nearest_road_node(lat, lon)
-            snapped_nodes.append((stop_id, nid, err_m))
+        # Gather up to 3 candidate curb nodes within 90 m (captures both sides of any divided highway
+        # while staying strictly inside GTFS Validator's 100 m stop-to-shape tolerance)
+        stop_cands: list[list[tuple[int, float]]] = [
+            self.nearest_road_candidates(lat, lon, k=3, max_radius_m=90.0)
+            for _, lat, lon in ordered_stops
+        ]
+
+        # Dynamic programming over candidate nodes to minimize total road travel cost + small offset penalty
+        # Prevents bogus multi-km U-turns on dual-carriageway highways like Kamptee Rd / Wardha Rd (NH44)
+        n_stops = len(ordered_stops)
+        dp_cost: list[list[float]] = [[float("inf")] * len(c) for c in stop_cands]
+        dp_prev: list[list[int]] = [[-1] * len(c) for c in stop_cands]
+        dp_path: dict[tuple[int, int, int], list[int]] = {}
+
+        for j, (_, err_m) in enumerate(stop_cands[0]):
+            dp_cost[0][j] = err_m * 0.2
+
+        for i in range(1, n_stops):
+            prev_cands = stop_cands[i - 1]
+            curr_cands = stop_cands[i]
+            for pj, (u_nid, _) in enumerate(prev_cands):
+                if dp_cost[i - 1][pj] == float("inf"):
+                    continue
+                for cj, (v_nid, err_m) in enumerate(curr_cands):
+                    if u_nid == v_nid:
+                        path_nodes = [u_nid]
+                        leg_cost = 0.0
+                    else:
+                        try:
+                            leg_cost, path_nodes = nx.bidirectional_dijkstra(
+                                self.graph, source=u_nid, target=v_nid, weight="weight"
+                            )
+                        except nx.NetworkXNoPath:
+                            continue
+                    cand_total = dp_cost[i - 1][pj] + float(leg_cost) + err_m * 0.2
+                    if cand_total < dp_cost[i][cj]:
+                        dp_cost[i][cj] = cand_total
+                        dp_prev[i][cj] = pj
+                        dp_path[(i, pj, cj)] = path_nodes
+
+        best_end_idx = min(range(len(stop_cands[-1])), key=lambda cj: dp_cost[-1][cj])
+        if dp_cost[-1][best_end_idx] == float("inf"):
+            raise RuntimeError(f"No drivable OSM bus route path found for {shape_id}")
+
+        # Backtrack chosen candidate index per stop
+        chosen_idx = [0] * n_stops
+        chosen_idx[-1] = best_end_idx
+        for i in range(n_stops - 1, 0, -1):
+            chosen_idx[i - 1] = dp_prev[i][chosen_idx[i]]
 
         full_node_path: list[int] = []
         edge_classes: list[str] = []
         stop_projections: list[SnappedStopProjection] = []
         cum_m = 0.0
 
-        for idx, (stop_id, nid, err_m) in enumerate(snapped_nodes):
+        for i, (stop_id, _, _) in enumerate(ordered_stops):
+            cj = chosen_idx[i]
+            nid, err_m = stop_cands[i][cj]
             slat, slon = self._node_coords[nid]
-            if idx == 0:
+            if i == 0:
                 full_node_path.append(nid)
                 stop_projections.append(
                     SnappedStopProjection(
@@ -190,20 +263,8 @@ class OSMRoadSnapper:
                 )
                 continue
 
-            prev_nid = snapped_nodes[idx - 1][1]
-            if prev_nid == nid:
-                stop_projections.append(
-                    SnappedStopProjection(
-                        stop_id=stop_id,
-                        s_m=round(cum_m, 2),
-                        snap_error_m=round(err_m, 2),
-                        snapped_lat=slat,
-                        snapped_lon=slon,
-                    )
-                )
-                continue
-
-            leg_nodes = nx.shortest_path(self.graph, source=prev_nid, target=nid, weight="weight")
+            pj = chosen_idx[i - 1]
+            leg_nodes = dp_path[(i, pj, cj)]
             for u, v in itertools.pairwise(leg_nodes):
                 edge_data = self.graph[u][v]
                 cum_m += float(edge_data["length_m"])
