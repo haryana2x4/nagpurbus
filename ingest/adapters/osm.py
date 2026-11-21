@@ -373,7 +373,7 @@ out skel qt;
                     ref_id = int(member["ref"])
                     if mtype == "way" and role in ("", "forward", "backward"):
                         way_ids.append(ref_id)
-                    elif mtype == "node" and (role.startswith("stop") or role.startswith("platform")):
+                    elif mtype == "node" and (role.startswith(("stop", "platform"))):
                         node = nodes_by_id.get(ref_id)
                         if not node:
                             continue

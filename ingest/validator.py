@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import itertools
 import json
 import subprocess
 from dataclasses import dataclass
@@ -69,7 +70,7 @@ def validate_bundle_internal(bundle: GTFSFeedBundle) -> list[str]:
         if len(rows) < 2:
             errors.append(f"Trip {tid} has fewer than 2 stop_times ({len(rows)})")
             continue
-        for prev, curr in zip(rows[:-1], rows[1:]):
+        for prev, curr in itertools.pairwise(rows):
             if curr[1] < prev[2]:
                 errors.append(
                     f"Trip {tid} non-monotonic time at seq {prev[0]}->{curr[0]} ({prev[2]}s -> {curr[1]}s)"

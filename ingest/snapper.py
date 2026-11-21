@@ -10,6 +10,7 @@ Primary strategy:
 
 from __future__ import annotations
 
+import itertools
 import math
 from dataclasses import dataclass
 from typing import Any
@@ -97,7 +98,7 @@ class OSMRoadSnapper:
             is_reverse_oneway = oneway_tag == "-1"
             speed_mps = OSM_ROAD_CLASS_BUS_SPEED_MPS[highway]
 
-            for u, v in zip(nds[:-1], nds[1:]):
+            for u, v in itertools.pairwise(nds):
                 if u == v:
                     continue
                 lat_u, lon_u = raw_nodes[u]
@@ -203,7 +204,7 @@ class OSMRoadSnapper:
                 continue
 
             leg_nodes = nx.shortest_path(self.graph, source=prev_nid, target=nid, weight="weight")
-            for u, v in zip(leg_nodes[:-1], leg_nodes[1:]):
+            for u, v in itertools.pairwise(leg_nodes):
                 edge_data = self.graph[u][v]
                 cum_m += float(edge_data["length_m"])
                 full_node_path.append(v)

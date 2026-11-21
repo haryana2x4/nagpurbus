@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import structlog
@@ -232,7 +232,7 @@ def save_bundle_to_sqlite(bundle: GTFSFeedBundle, sqlite_path: Path) -> Path:
         cur.executemany(
             "INSERT INTO meta VALUES (?, ?)",
             [
-                ("updated_at", datetime.now(timezone.utc).isoformat()),
+                ("updated_at", datetime.now(UTC).isoformat()),
                 (
                     "provenances",
                     json.dumps([p.__dict__ for p in bundle.provenances], ensure_ascii=False),

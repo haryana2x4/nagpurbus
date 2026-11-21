@@ -673,7 +673,7 @@ class MahaMetroFeederAdapter(BaseTransitAdapter):
                 offsets_s: list[int] = [0]
                 for idx in range(1, len(projections)):
                     leg_m = max(100.0, projections[idx].s_m - projections[idx - 1].s_m)
-                    leg_run_s = max(60, int(round(leg_m / FEEDER_ESTIMATED_COMMERCIAL_SPEED_MPS)))
+                    leg_run_s = max(60, round(leg_m / FEEDER_ESTIMATED_COMMERCIAL_SPEED_MPS))
                     prev_dep_offset = offsets_s[-1] + (FEEDER_INTERMEDIATE_DWELL_S if idx > 1 else 0)
                     offsets_s.append(prev_dep_offset + leg_run_s)
 

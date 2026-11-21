@@ -14,9 +14,7 @@ from ingest.adapters.gtfs_static import GTFSStaticAdapter
 from ingest.adapters.maha_metro import parse_nmc_feeder_pdf
 from ingest.adapters.osm import OSMTransitAdapter
 from ingest.aliases import build_stop_search_blob, enrich_stop_multilingual, normalize_search_text
-from ingest.gtfs_export import export_gtfs_zip
 from ingest.models import DataSourceLabel, StopRecord
-from ingest.pipeline import run_static_pipeline
 from ingest.snapper import OSMRoadSnapper
 from ingest.validator import run_mobilitydata_gtfs_validator, validate_bundle_internal
 
